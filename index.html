@@ -223,7 +223,7 @@
       const userEmail = urlParams.get("user") || "unknown_user";
 
       try {
-        await addDoc(collection(db, "phishing_click_logs"), {
+        await addDoc(collection(db, "phishingLogs"), {
           email: userEmail,
           timestamp: serverTimestamp(),
           action: "Email link clicked",
