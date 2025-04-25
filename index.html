@@ -220,8 +220,8 @@
     // ✅ Log link click when page loads
     window.onload = async () => {
       const urlParams = new URLSearchParams(window.location.search);
-      const userEmail = urlParams.get("user") || "unknown_user";
-
+      const userEmail = user?.email  || "unknown_user";
+       
       try {
         await addDoc(collection(db, "phishingLogs"), {
           email: userEmail,
